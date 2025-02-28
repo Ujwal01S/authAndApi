@@ -6,7 +6,6 @@ import Credentials from "next-auth/providers/credentials";
 import { loginSchema } from "@/schema/loginSchema";
 import { baseUrl } from "@/lib/api";
 
-
 export const options: NextAuthOptions = {
     providers: [
         Github({
@@ -45,8 +44,15 @@ export const options: NextAuthOptions = {
                     // console.log("FROM JWT:", data, userData);
                     return userData;
                 } catch (error) {
-                    console.error("Authorization error:", error);
-                    throw new Error(error.message);
+                    if (error instanceof Error) {
+                        throw new Error(error.message)
+                    } else {
+                        if (typeof error === 'object' && error !== null && 'message' in error) {
+                            throw new Error(`Authorization Failed: ${(error as Error).message}`);
+                        } else {
+                            throw new Error('Authorization Failed: Unknown error');
+                        }
+                    }
                 }
             },
         })
@@ -54,6 +60,7 @@ export const options: NextAuthOptions = {
     pages: {
         signIn: "/signIn"
     },
+    secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async jwt({ token, user }) {
             // initially token has only the default value name, sub, email, picture 
@@ -78,6 +85,9 @@ export const options: NextAuthOptions = {
             // the above clg only has name, email, image inside user
             return session
         }
+    },
+    session: {
+        strategy: "jwt"
     }
 
 }
