@@ -20,6 +20,7 @@ export default async function UserCard({ className }: UserCardProps) {
               src={session?.user.image}
               alt={session?.user.name}
               fill
+              sizes="(min-width: 808px) 50vw, 100vw"
               className="rounded-full"
             />
           )}

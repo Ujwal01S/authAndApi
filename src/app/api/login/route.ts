@@ -38,3 +38,18 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: "Unexpected Error occured" }, { status: 500 })
     }
 }
+
+export async function GET() {
+    try {
+        const users = await User.find()
+        if (!users) {
+            return NextResponse.json({ message: "No Users Yet!" }, { status: 201 });
+        }
+        return NextResponse.json({ message: "Successfull", users }, { status: 201 });
+    } catch (error) {
+        if (error instanceof Error) {
+            return NextResponse.json({ message: error.message }, { status: 500 })
+        }
+        return NextResponse.json({ message: "Unexpected Error occred" }, { status: 500 })
+    }
+}

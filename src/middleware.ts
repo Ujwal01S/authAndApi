@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl
     if (isAddEventRoute(pathname)) {
-        if (session?.role === "user") {
+        if (session?.role === "user" || !session) {
             return redirectTo("/", request)
         }
     }

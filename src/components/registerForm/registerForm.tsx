@@ -28,7 +28,7 @@ export default function RegisterForm() {
   } = form;
 
   const registerUser = async (data: RegisterFormType) => {
-    console.log({ data });
+    // console.log({ data });
 
     try {
       const formData = new FormData();
